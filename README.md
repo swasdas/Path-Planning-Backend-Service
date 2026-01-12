@@ -2,8 +2,6 @@
 
 A sophisticated autonomous robot path planning and control system for wall finishing tasks. This system uses advanced algorithms (Coverage Planning, A*, Genetic Algorithm) to generate optimal trajectories for robots to cover wall surfaces while avoiding obstacles.
 
-![System Architecture](docs/architecture.png)
-
 ## 📋 Table of Contents
 
 - [Features](#features)
