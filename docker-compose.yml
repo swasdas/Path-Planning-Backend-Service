@@ -1,0 +1,91 @@
+services:
+  # === DATABASE ===
+  postgres:
+    image: postgres:15-alpine
+    container_name: robot_postgres
+    environment:
+      POSTGRES_USER: robot
+      POSTGRES_PASSWORD: robot123
+      POSTGRES_DB: robotdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init_db.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U robot -d robotdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - robot_net
+
+  # === CACHE ===
+  redis:
+    image: redis:7-alpine
+    container_name: robot_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - robot_net
+
+  # === BACKEND API ===
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: robot_backend
+    environment:
+      - DATABASE_URL=postgresql://robot:robot123@postgres:5432/robotdb
+      - REDIS_URL=redis://redis:6379/0
+      - LOG_LEVEL=INFO
+      - PYTHONUNBUFFERED=1
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/app:/app/app
+      - ./scripts:/app/scripts
+      - ./logs:/app/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    networks:
+      - robot_net
+
+  # === FRONTEND ===
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: robot_frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/index.html:/app/index.html
+    environment:
+      - VITE_API_URL=http://localhost:8000
+      - VITE_WS_URL=ws://localhost:8000
+    depends_on:
+      - backend
+    networks:
+      - robot_net
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  robot_net:
+    driver: bridge
