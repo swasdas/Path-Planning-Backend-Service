@@ -1,4 +1,4 @@
-# 🤖 Wall Finishing Robot Control System
+# 🤖 Path Planning Backend Service
 
 A sophisticated autonomous robot path planning and control system for wall finishing tasks. This system uses advanced algorithms (Coverage Planning, A*, Genetic Algorithm) to generate optimal trajectories for robots to cover wall surfaces while avoiding obstacles.
 
