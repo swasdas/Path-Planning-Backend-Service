@@ -10,8 +10,8 @@ Base.metadata.create_all(bind=engine)
 
 # Initialize FastAPI app
 app = FastAPI(
-    title="Wall Finishing Robot Control System",
-    description="Autonomous robot path planning and control system for wall finishing tasks",
+    title="Path Planning Backend Service",
+    description="Spatial path planning, optimization and control system",
     version="1.0.0",
     docs_url="/docs",
     redoc_url="/redoc"
@@ -37,7 +37,7 @@ app.include_router(websocket.router)
 def root():
     """Root endpoint"""
     return {
-        "message": "Wall Finishing Robot Control System API",
+        "message": "Path Planning Backend Service API",
         "version": "1.0.0",
         "docs": "/docs",
         "health": "/health"
@@ -65,7 +65,7 @@ def health_check():
 @app.on_event("startup")
 async def startup_event():
     """Startup tasks"""
-    print("🤖 Starting Wall Finishing Robot Control System...")
+    print("🤖 Starting Path Planning Backend Service...")
     print(f"📚 API Documentation: http://localhost:8000/docs")
     print(f"🔧 Algorithm Settings:")
     print(f"   - Grid Resolution: {settings.grid_resolution}m")
@@ -75,4 +75,4 @@ async def startup_event():
 @app.on_event("shutdown")
 async def shutdown_event():
     """Shutdown tasks"""
-    print("🛑 Shutting down Wall Finishing Robot Control System...")
+    print("🛑 Shutting down Path Planning Backend Service...")
