@@ -1,11 +1,18 @@
 # 🤖 Path Planning Backend Service
 
-A sophisticated autonomous robot path planning and control system for wall finishing tasks. This system uses advanced algorithms (Coverage Planning, A*, Genetic Algorithm) to generate optimal trajectories for robots to cover wall surfaces while avoiding obstacles.
+A backend service for spatial path planning and optimization, designed to compute efficient traversal trajectories over 2D surfaces with obstacle constraints. The system applies coverage planning, A* search, and genetic optimization techniques to generate optimized paths, exposed via APIs for interactive and programmatic clients.
 
+## 📷 App Screenshot
+### Home UI (Frontend)
+<img width="1186" height="910" alt="image" src="https://github.com/user-attachments/assets/510e12b5-565b-44df-b360-edf2aa57ae30" />
+
+### Documentation (Backend)
+<img width="975" height="877" alt="image" src="https://github.com/user-attachments/assets/871abb37-4c3c-40df-8d5a-7c2e97cbbd7a" />
+
+<!--  COMMENTED TO UPDATE DEMO LATER ON
 ## 🎥 Demo Video
-
 [▶ Watch the walkthrough video](./swastik-demo-recording.mp4)
-
+-->
 
 ## 📋 Table of Contents
 
